@@ -10,14 +10,9 @@ public class BookControler {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)//vou passar como resposta do sastus o created
-    public BookDto create(){
+    public BookDto create(@RequestBody BookDto dto){
 
-        BookDto dto = new BookDto();
-
-        dto.setAuthor("Autor");
-        dto.setTitle("Meu Livro");
-        dto.setIsbn("12321312");
-        dto.setId(1L);
+        
 
         return dto;
     }

@@ -1,6 +1,7 @@
 package com.lino.libaryapis.api.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lino.libaryapis.api.dto.BookDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.awt.print.Book;
+
 @ExtendWith(SpringExtension.class)//o Spring vai criar um context para rodar o teste
 @ActiveProfiles("teste")//estou especificando que ira rodar no perfil de teste essas configurações
 @WebMvcTest//Vai fazer os teste unitarios na nossa api
@@ -33,6 +36,7 @@ public class BookControllerTest {
    @DisplayName("Deve criar um livro com sucesso")//vai dar o nome do teste que estamos realizando
    public void createBookTest() throws Exception{
 
+      BookDto dto = BookDto.builder().author("Artur").title("As aventuras").isbn("001").build();
       String json = new ObjectMapper().writeValueAsString(null);//ele recebe um objeto de qualquer tipo e transforma em json
 
       MockHttpServletRequestBuilder request = MockMvcRequestBuilders//vai montar a requisição para a api
@@ -45,9 +49,9 @@ public class BookControllerTest {
          .perform(request)
          .andExpect(MockMvcResultMatchers.status().isCreated())//é esperado que ele retorne um status created com as informações abaixo
          .andExpect( MockMvcResultMatchers.jsonPath("id").isNotEmpty())//esta verificando se esta vazio id
-         .andExpect( MockMvcResultMatchers.jsonPath("title").value("Meu Livro"))//esta verificando o valor do author
-         .andExpect( MockMvcResultMatchers.jsonPath("author").value("Autor"))//esta verificando o valor do author
-         .andExpect( MockMvcResultMatchers.jsonPath("isbn").value("12321312"));
+         .andExpect( MockMvcResultMatchers.jsonPath("title").value(dto.getTitle()))//esta verificando o valor do author
+         .andExpect( MockMvcResultMatchers.jsonPath("author").value(dto.getAuthor()))//esta verificando o valor do author
+         .andExpect( MockMvcResultMatchers.jsonPath("isbn").value(dto.getIsbn()));
 
    }
 
